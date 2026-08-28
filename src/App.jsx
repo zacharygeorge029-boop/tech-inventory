@@ -1,122 +1,54 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import GadgetForm from './components/GadgetForm';
+import RegistryTable from './components/RegistryTable';
+import ItemProfileCard from './components/ItemProfileCard';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [items, setItems] = useState([
+    { id: 1, gadget: 'iPhone 15', category: 'Smartphone', manufacturer: 'Apple', healthRating: 95, brand: 'Apple Inc.', role: 'Tester' },
+    { id: 2, gadget: 'Galaxy Book 4', category: 'Laptop', manufacturer: 'Samsung', healthRating: 88, brand: 'Samsung Electronics', role: 'Engineer' },
+    { id: 3, gadget: 'Apple Watch S9', category: 'Wearable', manufacturer: 'Apple', healthRating: 90, brand: 'Apple Inc.', role: 'Tester' },
+    { id: 4, gadget: 'Sony WH-1000XM5', category: 'Audio', manufacturer: 'Sony', healthRating: 92, brand: 'Sony Corp', role: 'Engineer' },
+  ]);
+
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [filterRole, setFilterRole] = useState('All');
+
+  const handleAddItem = (newItem) => {
+    setItems((prev) => [newItem, ...prev]);
+  };
+
+  // Phase 3 Requirement: Sync selection if items update
+  useEffect(() => {
+    if (!selectedItem) return;
+    const match = items.find((i) => i.id === selectedItem.id);
+    if (match && match !== selectedItem) {
+      setSelectedItem(match);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="min-h-screen bg-slate-900 text-slate-100 p-8 font-sans">
+      <h1 className="text-3xl font-bold mb-6 text-center text-cyan-400">
+        Tech Gadget & Inventory Hub (Set C)
+      </h1>
 
-      <div className="ticks"></div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <GadgetForm onAddItem={handleAddItem} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        <div className="lg:col-span-2 space-y-6">
+          <RegistryTable
+            items={items}
+            selectedItem={selectedItem}
+            onSelectRow={setSelectedItem}
+            filterRole={filterRole}
+            onFilterChange={setFilterRole}
+          />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          <ItemProfileCard selectedItem={selectedItem} />
+        </div>
+      </div>
+    </div>
+  );
 }
-
-export default App
