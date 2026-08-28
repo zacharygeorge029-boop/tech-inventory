@@ -38,6 +38,7 @@ export default function GadgetTable({ data, selectedId, onSelect, roleFilter, se
     []
   );
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: filteredData,
     columns,
