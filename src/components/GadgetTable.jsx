@@ -1,6 +1,10 @@
 import { useState, useMemo } from 'react';
-import { flexRender, useReactTable } from '@tanstack/react-table';
-import { getCoreRowModel, getPaginationRowModel } from '@tanstack/table-core';
+import { 
+  useReactTable, 
+  getCoreRowModel, 
+  getPaginationRowModel, 
+  flexRender 
+} from '@tanstack/react-table';
 
 export default function GadgetTable({ data, selectedId, onSelect, roleFilter, setRoleFilter }) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 4 });
