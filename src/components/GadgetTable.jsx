@@ -1,10 +1,6 @@
 import { useState, useMemo } from 'react';
-import {
-  useReactTable,
-  getCoreRowModel,
-  getPaginationRowModel,
-  flexRender,
-} from '@tanstack/react-table';
+import { flexRender, useReactTable } from '@tanstack/react-table';
+import { getCoreRowModel, getPaginationRowModel } from '@tanstack/table-core';
 
 export default function GadgetTable({ data, selectedId, onSelect, roleFilter, setRoleFilter }) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 4 });
@@ -38,7 +34,6 @@ export default function GadgetTable({ data, selectedId, onSelect, roleFilter, se
     []
   );
 
-  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: filteredData,
     columns,
