@@ -5,48 +5,38 @@ import ItemProfileCard from './components/ItemProfileCard';
 
 export default function App() {
   const [items, setItems] = useState([
-    { id: 1, gadget: 'iPhone 15', category: 'Smartphone', manufacturer: 'Apple', healthRating: 95, brand: 'Apple Inc.', role: 'Tester' },
-    { id: 2, gadget: 'Galaxy Book 4', category: 'Laptop', manufacturer: 'Samsung', healthRating: 88, brand: 'Samsung Electronics', role: 'Engineer' },
-    { id: 3, gadget: 'Apple Watch S9', category: 'Wearable', manufacturer: 'Apple', healthRating: 90, brand: 'Apple Inc.', role: 'Tester' },
-    { id: 4, gadget: 'Sony WH-1000XM5', category: 'Audio', manufacturer: 'Sony', healthRating: 92, brand: 'Sony Corp', role: 'Engineer' },
+    { id: 1, gadget: 'iPhone 15 Pro', category: 'Smartphone', manufacturer: 'Apple', healthRating: 100, brand: 'Apple', role: 'Tester' },
+    { id: 2, gadget: 'MacBook Pro M3', category: 'Laptop', manufacturer: 'Apple', healthRating: 98, brand: 'Apple', role: 'Engineer' },
+    { id: 3, gadget: 'Apple Watch Ultra', category: 'Wearable', manufacturer: 'Apple', healthRating: 95, brand: 'Apple', role: 'Tester' },
+    { id: 4, gadget: 'AirPods Max', category: 'Audio', manufacturer: 'Apple', healthRating: 92, brand: 'Apple', role: 'Engineer' },
   ]);
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [filterRole, setFilterRole] = useState('All');
 
-  const handleAddItem = (newItem) => {
-    setItems((prev) => [newItem, ...prev]);
-  };
+  const handleAddItem = (newItem) => setItems((prev) => [newItem, ...prev]);
 
-  // Phase 3 Requirement: Sync selection if items update
   useEffect(() => {
-    if (!selectedItem) return;
-    const match = items.find((i) => i.id === selectedItem.id);
-    if (match && match !== selectedItem) {
-      setSelectedItem(match);
+    if (selectedItem) {
+      const match = items.find((i) => i.id === selectedItem.id);
+      if (match && JSON.stringify(match) !== JSON.stringify(selectedItem)) setSelectedItem(match);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items]);
+  }, [items, selectedItem]);
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 p-8 font-sans">
-      <h1 className="text-3xl font-bold mb-6 text-center text-cyan-400">
-        Tech Gadget & Inventory Hub (Set C)
-      </h1>
+    <div className="min-h-screen bg-black text-zinc-100 p-6 md:p-12 font-sans selection:bg-blue-500/30">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl font-semibold tracking-tight mb-10 text-white">
+          Tech Gadget & Inventory Hub
+        </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-        <GadgetForm onAddItem={handleAddItem} />
-
-        <div className="lg:col-span-2 space-y-6">
-          <RegistryTable
-            items={items}
-            selectedItem={selectedItem}
-            onSelectRow={setSelectedItem}
-            filterRole={filterRole}
-            onFilterChange={setFilterRole}
-          />
-
-          <ItemProfileCard selectedItem={selectedItem} />
+        <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-8">
+          <GadgetForm onAddItem={handleAddItem} />
+          
+          <div className="flex flex-col gap-8">
+            <RegistryTable items={items} selectedItem={selectedItem} onSelectRow={setSelectedItem} filterRole={filterRole} onFilterChange={setFilterRole} />
+            <ItemProfileCard selectedItem={selectedItem} />
+          </div>
         </div>
       </div>
     </div>

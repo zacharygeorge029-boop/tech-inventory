@@ -16,80 +16,49 @@ export default function RegistryTable({ items, selectedItem, onSelectRow, filter
   }, [filteredItems, pageIndex, pageSize]);
 
   return (
-    <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-md">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-cyan-300">Registry Table View</h2>
-        <div className="flex items-center gap-2">
-          <span className="text-sm">Filter Role:</span>
-          <select
-            className="bg-slate-700 border border-slate-600 rounded p-1 text-sm text-white"
-            value={filterRole}
-            onChange={(e) => {
-              onFilterChange(e.target.value);
-              setPageIndex(0); 
-            }}
-          >
-            <option value="All">All Roles</option>
-            <option value="Engineer">Engineer</option>
-            <option value="Tester">Tester</option>
-          </select>
-        </div>
+    <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 lg:p-8 shadow-2xl">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-semibold text-white tracking-tight">Registry View</h2>
+        <select className="bg-black border border-zinc-800 rounded-lg px-3 py-1.5 text-xs text-zinc-300 focus:outline-none focus:border-blue-500" value={filterRole} onChange={(e) => { onFilterChange(e.target.value); setPageIndex(0); }}>
+          <option value="All">All Roles</option>
+          <option value="Engineer">Engineer</option>
+          <option value="Tester">Tester</option>
+        </select>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left border-collapse text-sm">
           <thead>
-            <tr className="border-b border-slate-700">
-              <th className="p-2 text-slate-400 font-medium">Gadget Name</th>
-              <th className="p-2 text-slate-400 font-medium">Category</th>
-              <th className="p-2 text-slate-400 font-medium">Manufacturer</th>
-              <th className="p-2 text-slate-400 font-medium">Health Rating</th>
-              <th className="p-2 text-slate-400 font-medium">User Role</th>
+            <tr className="border-b border-zinc-800 text-zinc-500 uppercase tracking-wider text-xs">
+              <th className="font-medium pb-3 px-2">Gadget</th>
+              <th className="font-medium pb-3 px-2">Category</th>
+              <th className="font-medium pb-3 px-2">Brand</th>
+              <th className="font-medium pb-3 px-2">Rating</th>
+              <th className="font-medium pb-3 px-2">Role</th>
             </tr>
           </thead>
           <tbody>
             {paginatedItems.map((item) => (
-              <tr
-                key={item.id}
-                onClick={() => onSelectRow(item)}
-                className={`border-b border-slate-700/50 cursor-pointer hover:bg-slate-700/50 transition ${
-                  selectedItem?.id === item.id ? 'bg-slate-700' : ''
-                }`}
-              >
-                <td className="p-2 font-medium text-white">{item.gadget}</td>
-                <td className="p-2 text-slate-300">{item.category}</td>
-                <td className="p-2 text-slate-300">{item.manufacturer}</td>
-                <td className="p-2 text-cyan-400 font-semibold">{item.healthRating}</td>
-                <td className="p-2 text-slate-300">{item.role}</td>
+              <tr key={item.id} onClick={() => onSelectRow(item)} className={`border-b border-zinc-800/50 cursor-pointer transition-colors ${selectedItem?.id === item.id ? 'bg-blue-500/10' : 'hover:bg-zinc-800/40'}`}>
+                <td className="py-3 px-2 font-medium text-zinc-100">{item.gadget}</td>
+                <td className="py-3 px-2 text-zinc-400">{item.category}</td>
+                <td className="py-3 px-2 text-zinc-400">{item.brand}</td>
+                <td className="py-3 px-2 text-blue-400 font-medium">{item.healthRating}%</td>
+                <td className="py-3 px-2 text-zinc-400">{item.role}</td>
               </tr>
             ))}
-            {paginatedItems.length === 0 && (
-              <tr>
-                <td colSpan="5" className="p-4 text-center text-slate-400">
-                  No records matching criteria.
-                </td>
-              </tr>
-            )}
           </tbody>
         </table>
       </div>
 
-      <div className="flex justify-between items-center mt-4 pt-2 border-t border-slate-700">
-        <button
-          className="bg-slate-700 hover:bg-slate-600 disabled:opacity-50 px-3 py-1 rounded text-sm"
-          onClick={() => setPageIndex((prev) => Math.max(prev - 1, 0))}
-          disabled={pageIndex === 0}
-        >
+      <div className="flex justify-between items-center mt-6 pt-4 border-t border-zinc-800">
+        <button className="bg-black border border-zinc-800 hover:border-zinc-700 disabled:opacity-50 px-4 py-1.5 rounded-lg text-xs font-medium transition-colors" onClick={() => setPageIndex((p) => Math.max(p - 1, 0))} disabled={pageIndex === 0}>
           Previous
         </button>
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-zinc-500 font-medium">
           Page {pageIndex + 1} of {pageCount}
         </span>
-        <button
-          className="bg-slate-700 hover:bg-slate-600 disabled:opacity-50 px-3 py-1 rounded text-sm"
-          onClick={() => setPageIndex((prev) => Math.min(prev + 1, pageCount - 1))}
-          disabled={pageIndex >= pageCount - 1}
-        >
+        <button className="bg-black border border-zinc-800 hover:border-zinc-700 disabled:opacity-50 px-4 py-1.5 rounded-lg text-xs font-medium transition-colors" onClick={() => setPageIndex((p) => Math.min(p + 1, pageCount - 1))} disabled={pageIndex >= pageCount - 1}>
           Next
         </button>
       </div>
